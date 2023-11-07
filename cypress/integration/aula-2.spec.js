@@ -10,8 +10,11 @@ describe("exibe mensagem de erro ao submeter o formulário com um email com form
         "vamos testar escrever algum texto mais longo e então diminuir o tempo de espera do input!",
         { delay: 0 }
       );
+      cy.clock()
       cy.get('[type="submit"]').click();
       cy.get('.error').should('be.visible');
+      cy.tick(3000)
+      cy.get('.error').should('not.be.visible');
     });
 
     it('Preenche o formulário sem valor no campo telefone quando tal campo deve ser obrigatório', function() {
@@ -33,15 +36,17 @@ describe("exibe mensagem de erro ao submeter o formulário com um email com form
 
   })
 
-  it('reenche e limpa os campos nome, sobrenome, email e telefone', function() {
-    cy.visit('./src/index.html')
-    cy.get('[id="firstName"]').type('Tomás').should('have.value', "Tomás")
-    .clear().should('have.value', "")
-    cy.get('[id="lastName"]').type('Jesus').should('have.value', "Jesus")
-        .clear().should('have.value', "")
-    cy.get('[id="email"]').type('fake@mail.com').should('have.value', "fake@mail.com")
-        .clear().should('have.value', "")
-    
+  Cypress._.times(5, () => {
+    it('reenche e limpa os campos nome, sobrenome, email e telefone', function() {
+      cy.visit('./src/index.html')
+      cy.get('[id="firstName"]').type('Tomás').should('have.value', "Tomás")
+      .clear().should('have.value', "")
+      cy.get('[id="lastName"]').type('Jesus').should('have.value', "Jesus")
+          .clear().should('have.value', "")
+      cy.get('[id="email"]').type('fake@mail.com').should('have.value', "fake@mail.com")
+          .clear().should('have.value', "")
+      
+    })
   })
 
   
